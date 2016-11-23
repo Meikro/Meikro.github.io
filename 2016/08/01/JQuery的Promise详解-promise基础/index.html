@@ -1,0 +1,646 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="－ Ajax - JQuery," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言在网站开发中，会经常处理各种事件，如mouseclick/mouseover/click等等。在DOM 0事件模型，采取的事件监听方式是 ele.onclick=handler ，这会导致一个问题，如果想用 hanlder2 来监听 click ，则 hanlder 就会被覆盖，不会执行了，因为一次只能安排一个监听函数。但在DOM 2事件模型中，使用DOM方法中的 addEventListen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JQuery的Promise详解:promise基础">
+<meta property="og:url" content="http://yoursite.com/2016/08/01/JQuery的Promise详解-promise基础/index.html">
+<meta property="og:site_name" content="灯火阑珊处～">
+<meta property="og:description" content="前言在网站开发中，会经常处理各种事件，如mouseclick/mouseover/click等等。在DOM 0事件模型，采取的事件监听方式是 ele.onclick=handler ，这会导致一个问题，如果想用 hanlder2 来监听 click ，则 hanlder 就会被覆盖，不会执行了，因为一次只能安排一个监听函数。但在DOM 2事件模型中，使用DOM方法中的 addEventListen">
+<meta property="og:image" content="http://yoursite.com/img/promise1.png">
+<meta property="og:updated_time" content="2016-08-01T06:24:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JQuery的Promise详解:promise基础">
+<meta name="twitter:description" content="前言在网站开发中，会经常处理各种事件，如mouseclick/mouseover/click等等。在DOM 0事件模型，采取的事件监听方式是 ele.onclick=handler ，这会导致一个问题，如果想用 hanlder2 来监听 click ，则 hanlder 就会被覆盖，不会执行了，因为一次只能安排一个监听函数。但在DOM 2事件模型中，使用DOM方法中的 addEventListen">
+<meta name="twitter:image" content="http://yoursite.com/img/promise1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/01/JQuery的Promise详解-promise基础/"/>
+
+  <title> JQuery的Promise详解:promise基础 | 灯火阑珊处～ </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">灯火阑珊处～</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JQuery的Promise详解:promise基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-01T14:13:13+08:00" content="2016-08-01">
+              2016-08-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/01/JQuery的Promise详解-promise基础/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/01/JQuery的Promise详解-promise基础/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在网站开发中，会经常处理各种事件，如<code>mouseclick/mouseover/click</code>等等。在DOM 0事件模型，采取的事件监听方式是 <code>ele.onclick=handler</code> ，这会导致一个问题，如果想用 hanlder2 来监听 click ，则 hanlder 就会被覆盖，不会执行了，因为一次只能安排一个监听函数。但在DOM 2事件模型中，使用DOM方法中的 <code>addEventListener</code> 来添加事件监听就能解决这个问题，它支持你为一个事件添加多个处理程序。</p>
+<p>Ajax的调用也经历了类似的过程。</p>
+<p>在JQuery 1.5之前，Ajax仅支持一个回调函数，但在JQuery的1.5版本中，引入了 Deferred 对象，它允许注册多个回调函数，并且能传递任何同步或异步函数的执行状态–成功或失败。简单说， Deferred 对象就是jQuery的回调函数解决方案，它解决了如何处理耗时操作的问题，对那些操作提供了更好的控制，以及统一的编程接口。<br><a id="more"></a></p>
+<h3 id="什么是Promise"><a href="#什么是Promise" class="headerlink" title="什么是Promise"></a>什么是Promise</h3><p>Promise 对象用来进行延迟(deferred) 和异步(asynchronous ) 计算。回顾一下在JQuery 1.5之前，传统的Ajax操作写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">url: &quot;/ServerResource.txt&quot;,</div><div class="line">success: successFunction,</div><div class="line">error: errorFunction</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>$.ajax()操作完成后，如果使用的是低于1.5.0版本的jQuery，返回的是XHR对象，你没法进行链式操作；如果高于1.5.0版本，返回的是deferred对象，可以进行链式操作。</p>
+<p>现在，新的写法是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var promise = $.ajax(&#123;</div><div class="line">url: &quot;/ServerResource.txt&quot;</div><div class="line">&#125;);</div><div class="line">promise.done(successFunction);</div><div class="line">promise.fail(errorFunction);</div><div class="line">promise.always(alwaysFunction);</div></pre></td></tr></table></figure></p>
+<p>在jQuery 1.6之前， always() 相当于 complete() ，在 done() 或 fail() 执行完毕之后才执行，即无论Ajax的执行结果是什么， always() 总会执行。</p>
+<p>done() ， fail() ， 和 always() 会返回同一个JQuery XMLHttpRequest(jqXHR)对象，所以可以进行链式调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$.ajax( &quot;example.php&quot; )</div><div class="line">.done(function() &#123; alert(&quot;success&quot;); &#125;)</div><div class="line">.fail(function() &#123; alert(&quot;error&quot;); &#125;)</div><div class="line">.always(function() &#123; alert(&quot;complete&quot;); &#125;);</div><div class="line">deferred对象的一大好处，就是它允许你自由添加多个回调函数。</div><div class="line"></div><div class="line">$.ajax(&quot;test.html&quot;)</div><div class="line">.done(function()&#123; alert(&quot;哈哈，成功了！&quot;);&#125; )</div><div class="line">.fail(function()&#123; alert(&quot;出错啦！&quot;); &#125; )</div><div class="line">.done(function()&#123; alert(&quot;第二个回调函数！&quot;);&#125; );</div></pre></td></tr></table></figure></p>
+<p>回调函数可以添加任意多个，它们按照添加顺序执行。如果在后续的代码中还需要利用改jqXHR对象，就必须用变量保存：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var jqxhr = $.ajax( &quot;example.php&quot; )</div><div class="line">.done(function() &#123; alert(&quot;success&quot;); &#125;)</div><div class="line">.fail(function() &#123; alert(&quot;error&quot;); &#125;)</div><div class="line">.always(function() &#123; alert(&quot;complete&quot;); &#125;);</div><div class="line">// todo ...</div><div class="line">// 再次调用</div><div class="line">jqxhr.always(function() &#123; alert(&quot;another complete&quot;); &#125;);</div></pre></td></tr></table></figure></p>
+<p>另外一种产生链式调用的方式是利用Promise的 then 方法，它接受三个event handlers作为参数，在jquery 1.8之前，对于多个回调函数，有需要以数组方式传入三个参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;url: &quot;/ServerResource.txt&quot;&#125;)</div><div class="line">.then([successFunction1, successFunction2, successFunction3],</div><div class="line">[errorFunction1, errorFunction2]);</div><div class="line">//same as</div><div class="line">var jqxhr = $.ajax(&#123;</div><div class="line">url: &quot;/ServerResource.txt&quot;</div><div class="line">&#125;);</div><div class="line">jqxhr.done(successFunction1);</div><div class="line">jqxhr.done(successFunction2);</div><div class="line">jqxhr.done(successFunction3);</div><div class="line">jqxhr.fail(errorFunction1);</div><div class="line">jqxhr.fail(errorFunction2);</div></pre></td></tr></table></figure></p>
+<p>1.8版本之后， then 会返回一个新的Promise，它可以通过一个函数过滤掉Deferred对象的状态和值，用于取代不被推荐使用的 <code>deferred.pipe()</code> 方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var promise = $.ajax(&#123;</div><div class="line">url: &quot;/ServerResource.txt&quot;</div><div class="line">&#125;);</div><div class="line">promise.then(successFunction, errorFunction);</div><div class="line">//如果不想处理某个事件类型，可以传入Null</div><div class="line">var promise = $.ajax(&#123;</div><div class="line">url: &quot;/ServerResource.txt&quot;</div><div class="line">&#125;);</div><div class="line">promise.then(successFunction); //no handler for the fail() event</div><div class="line">then() 方法还能逐次调用多个方法，可以用于处理有着先后顺序或者依赖的多个Ajax请求：</div><div class="line"></div><div class="line">var promise = $.ajax(&quot;/myServerScript1&quot;);</div><div class="line">function getStuff() &#123;</div><div class="line">return $.ajax(&quot;/myServerScript2&quot;);</div><div class="line">&#125;</div><div class="line">promise.then(getStuff).then(function(myServerScript2Data)&#123;</div><div class="line">// Do something</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p><img src="/img/promise1.png" alt="promise"></p>
+<h3 id="为多个操作指定回调函数"><a href="#为多个操作指定回调函数" class="headerlink" title="为多个操作指定回调函数"></a>为多个操作指定回调函数</h3><p>上文提到过，Deferred对象允许你为多个事件指定一个回调函数，这是传统写法做不到的。请看下面的代码，它用到了一个新的方法 $.when() ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.when($.ajax(&quot;test1.html&quot;), $.ajax(&quot;test2.html&quot;))</div><div class="line">.done(function()&#123; alert(&quot;哈哈，成功了！&quot;); &#125;)</div><div class="line">.fail(function()&#123; alert(&quot;出错啦！&quot;); &#125;);</div></pre></td></tr></table></figure></p>
+<p>这段代码的意思是，先执行两个操作 <code>$.ajax(&quot;test1.html&quot;) 和 $.ajax(&quot;test2.html&quot;)</code> ，如果都成功了，就运行done()指定的回调函数；如果有一个失败或都失败了，就执行fail()指定的回调函数。</p>
+<p>$.when()的参数只能是deferred对象，如果不是，则done会立即执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var wait = function()&#123;</div><div class="line">var tasks = function()&#123;</div><div class="line">alert(&quot;执行完毕！&quot;);</div><div class="line">&#125;;</div><div class="line">setTimeout(tasks,5000);</div><div class="line">&#125;;</div><div class="line">$.when(wait())</div><div class="line">.done(function()&#123; alert(&quot;哈哈，成功了！&quot;); &#125;)</div><div class="line">.fail(function()&#123; alert(&quot;出错啦！&quot;); &#125;);</div></pre></td></tr></table></figure></p>
+<h3 id="Promise的状态"><a href="#Promise的状态" class="headerlink" title="Promise的状态"></a>Promise的状态</h3><p>在任何时刻，Promise只能处于三种状态之一：未完成(unfulfilled)、已完成(resolved)和已失败(resolved)。promise默认的状态是unresolved，任何处于回调队列的函数都会被执行。举个粟子，如果一个Ajax调用成功， $.resolved 会被调用，同时promise的状态转为resolved，以及任何监听 done 的回调都会被执行；相反，则 $.rejected 会被调用，同时promise的状态转为rejected，以及任何监听 fail 的回调都会被执行。</p>
+<p>对上述的wait进行改写：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var dtd = $.Deferred(); // 新建一个deferred对象</div><div class="line">var wait = function(dtd)&#123;</div><div class="line">var tasks = function()&#123;</div><div class="line">alert(&quot;执行完毕！&quot;);</div><div class="line">dtd.resolve(); // 改变deferred对象的执行状态</div><div class="line">//dtd.reject(); 改变Deferred对象的执行状态</div><div class="line">&#125;;</div><div class="line">setTimeout(tasks,5000);</div><div class="line">return dtd;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>现在，wait()函数返回的是deferred对象，这就可以加上链式操作了。</p>
+<p>//wait()函数运行完，就会自动运行done()方法指定的回调函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.when(wait(dtd))</div><div class="line">.done(function()&#123; alert(&quot;哈哈，成功了！&quot;); &#125;)</div><div class="line">.fail(function()&#123; alert(&quot;出错啦！&quot;); &#125;);</div></pre></td></tr></table></figure></p>
+<p>在ajax操作中，deferred对象会根据返回结果，自动改变自身的执行状态；但是，在wait()函数中，这个执行状态必须由程序员手动指定。调用dtd.resolve()，将dtd对象的执行状态从”未完成”改为”已完成”，从而触发done()方法。调用dtd.reject()，将dtd对象的执行状态从”未完成”改为”已失败”，从而触发fail()方法。</p>
+<p>但是这种写法是有问题的，因为dtd是一个全局对象，所以它的执行状态可以从外部改变。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var dtd = $.Deferred(); // 新建一个Deferred对象</div><div class="line">var wait = function(dtd)&#123;</div><div class="line">var tasks = function()&#123;</div><div class="line">alert(&quot;执行完毕！&quot;);</div><div class="line">dtd.resolve(); // 改变Deferred对象的执行状态</div><div class="line">&#125;;</div><div class="line">setTimeout(tasks,5000);</div><div class="line">return dtd;</div><div class="line">&#125;;</div><div class="line">$.when(wait(dtd))</div><div class="line">.done(function()&#123; alert(&quot;哈哈，成功了！&quot;); &#125;)</div><div class="line">.fail(function()&#123; alert(&quot;出错啦！&quot;); &#125;);</div><div class="line">dtd.resolve(); //在这里改变dtd的执行状态</div></pre></td></tr></table></figure>
+<p>我在代码的尾部加了一行dtd.resolve()，这就改变了dtd对象的执行状态，因此导致done()方法立刻执行，跳出”哈哈，成功了！”的提示框，等5秒之后再跳出”执行完毕！”的提示框。</p>
+<p>为了避免这种情况，可以在内部建立Deferred对象：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var wait = function(dtd)&#123;</div><div class="line">var dtd = $.Deferred(); // 在内部新建一个Deferred对象</div><div class="line">var tasks = function()&#123;</div><div class="line">alert(&quot;执行完毕！&quot;);</div><div class="line">dtd.resolve(); // 改变Deferred对象的执行状态</div><div class="line">&#125;;</div><div class="line">setTimeout(tasks,5000);</div><div class="line">return dtd;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>另外一个方式是利用 <code>deferred.promise()</code> 方法：</p>
+<p>The deferred.promise() method allows an asynchronous function to prevent other code from interfering with the progress or status of its internal request. The Promise exposes only the Deferred methods needed to attach additional handlers or determine the state (then, done, fail, always, pipe, progress, state and promise), but not ones that change the state (resolve, reject, notify, resolveWith, rejectWith, and notifyWith).</p>
+<p>也就是说， deferred.promise() 只是阻止其他代码来改变这个 deferred 对象的状态。可以理解成，通过 deferred.promise() 方法返回的 deferred promise 对象，是没有 resolve ,reject, progress , resolveWith, rejectWith , progressWith 这些可以改变状态的方法，你只能使用 done, then ,fail 等方法添加 handler 或者判断状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var dtd = $.Deferred(); //新建一个延迟对象</div><div class="line">var wait = function(dtd)&#123;</div><div class="line">var tasks = function()&#123;</div><div class="line">alert(&quot;执行完毕！&quot;);</div><div class="line">dtd.resolve(); // 改变Deferred对象的执行状态</div><div class="line">&#125;;</div><div class="line">setTimeout(tasks,5000);</div><div class="line">return dtd.promise(); // 返回promise对象</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/－-Ajax-JQuery/" rel="tag">#－ Ajax - JQuery</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/29/inline-block和float的区别，什么时候使用/" rel="next" title="inline-block和float的区别，什么时候使用">
+                <i class="fa fa-chevron-left"></i> inline-block和float的区别，什么时候使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/01/app自适应布局探索与总结/" rel="prev" title="app自适应布局探索与总结">
+                app自适应布局探索与总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/01/JQuery的Promise详解-promise基础/"
+           data-title="JQuery的Promise详解:promise基础" data-url="http://yoursite.com/2016/08/01/JQuery的Promise详解-promise基础/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Me1kro Peng" />
+          <p class="site-author-name" itemprop="name">Me1kro Peng</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Promise"><span class="nav-number">2.</span> <span class="nav-text">什么是Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为多个操作指定回调函数"><span class="nav-number">3.</span> <span class="nav-text">为多个操作指定回调函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise的状态"><span class="nav-number">4.</span> <span class="nav-text">Promise的状态</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Me1kro Peng</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"meikro"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

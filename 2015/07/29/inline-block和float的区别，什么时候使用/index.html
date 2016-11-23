@@ -1,0 +1,642 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="CSS布局创建网站,浮动绝对占据了很大的比例.大块区域如主内容及侧边栏,以及在其中的小块区域,都可以看到浮动的影子.这里浮动是唯一的解决方案吗?
+浮动通常表现正常，但有时候搞起来会很纠结。特别是处理内部容器中的浮动，比如对一排图片使用浮动后对齐出现问题。Inline-block是我们的另一种选择。使用这种属性可以模拟部分浮动的特征，而不需要处理一些浮动带来的问题。
+Inline-block不是什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="inline-block和float的区别，什么时候使用">
+<meta property="og:url" content="http://yoursite.com/2015/07/29/inline-block和float的区别，什么时候使用/index.html">
+<meta property="og:site_name" content="灯火阑珊处～">
+<meta property="og:description" content="CSS布局创建网站,浮动绝对占据了很大的比例.大块区域如主内容及侧边栏,以及在其中的小块区域,都可以看到浮动的影子.这里浮动是唯一的解决方案吗?
+浮动通常表现正常，但有时候搞起来会很纠结。特别是处理内部容器中的浮动，比如对一排图片使用浮动后对齐出现问题。Inline-block是我们的另一种选择。使用这种属性可以模拟部分浮动的特征，而不需要处理一些浮动带来的问题。
+Inline-block不是什么">
+<meta property="og:image" content="http://yoursite.com/img/inline1.jpg">
+<meta property="og:image" content="http://yoursite.com/img/inline2.jpg">
+<meta property="og:image" content="http://yoursite.com/img/inline3.jpg">
+<meta property="og:image" content="http://yoursite.com/img/inline4.jpg">
+<meta property="og:updated_time" content="2016-08-01T08:03:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="inline-block和float的区别，什么时候使用">
+<meta name="twitter:description" content="CSS布局创建网站,浮动绝对占据了很大的比例.大块区域如主内容及侧边栏,以及在其中的小块区域,都可以看到浮动的影子.这里浮动是唯一的解决方案吗?
+浮动通常表现正常，但有时候搞起来会很纠结。特别是处理内部容器中的浮动，比如对一排图片使用浮动后对齐出现问题。Inline-block是我们的另一种选择。使用这种属性可以模拟部分浮动的特征，而不需要处理一些浮动带来的问题。
+Inline-block不是什么">
+<meta name="twitter:image" content="http://yoursite.com/img/inline1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/07/29/inline-block和float的区别，什么时候使用/"/>
+
+  <title> inline-block和float的区别，什么时候使用 | 灯火阑珊处～ </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">灯火阑珊处～</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                inline-block和float的区别，什么时候使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-29T09:34:46+08:00" content="2015-07-29">
+              2015-07-29
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/29/inline-block和float的区别，什么时候使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/29/inline-block和float的区别，什么时候使用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>CSS布局创建网站,浮动绝对占据了很大的比例.大块区域如主内容及侧边栏,以及在其中的小块区域,都可以看到浮动的影子.这里浮动是唯一的解决方案吗?</p>
+<p>浮动通常表现正常，但有时候搞起来会很纠结。特别是处理内部容器中的浮动，比如对一排图片使用浮动后对齐出现问题。Inline-block是我们的另一种选择。使用这种属性可以模拟部分浮动的特征，而不需要处理一些浮动带来的问题。</p>
+<p>Inline-block不是什么新鲜话题了，估计你也用过。不过我最近才是用到这个属性。之前的几个站点上，有展示一系列照片的需求，我就用inline-block代替了浮动。<br><a id="more"></a></p>
+<h4 id="inline-block是什么？"><a href="#inline-block是什么？" class="headerlink" title="inline-block是什么？"></a>inline-block是什么？</h4><p>Inline-block是元素display属性的一个值。这个名字的由来是因为，display设置这个值的元素，兼具行内元素（ inline elements）跟块级元素（block elements）的特征。</p>
+<p> <strong>块级元素</strong>（block elements）,来源于CSS盒子模型。块级元素包含width height,padding,border与margin，他们的排列方式是从上到下排列。 行内元素，排列方式是水平排列。<br> <strong>行内元素</strong>（inline elements）排列方式是水平排列。<br> <strong>行内块元素</strong>（inline-block elements）在内部他的表现类似block元素，比如他拥有block元素的width height,padding,border与margin，而外部的排列方式有类似行内元素，即水平排列，而不是像块级元素一样从上到下排列<br>如果你考虑了上面这些东东，你可以了解到，inline-block元素跟元素设置浮动后的表现差别并不是很大。对盒子设置浮动后，同样会水平排列。虽然他们实现的原理不同，但内部表现为块级元素，水平排列这种需求，浮动跟inline-block都适合实现。<br><img src="/img/inline1.jpg" alt="inline1"></p>
+<h4 id="inline-block和float的区别"><a href="#inline-block和float的区别" class="headerlink" title="inline-block和float的区别"></a>inline-block和float的区别</h4><p>虽然设置浮动跟设置inline-block有些特征类似，但两者的区别还是非常明显的:</p>
+<p> <strong>文档流（Document flow）</strong>:浮动元素会脱离文档流，并使得周围元素环绕这个元素。而inline-block元素仍在文档流内。因此设置inline-block不需要清除浮动。当然，周围元素不会环绕这个元素，你也不可能通过清除inline-block就让一个元素跑到下面去。<br> <strong>水平位置（Horizontal position）</strong>：很明显你不能通过给父元素设置text-align:center让浮动元素居中。事实上定位类属性设置到父元素上，均不会影响父元素内浮动的元素。但是父元素内元素如果设置了display：inline-block，则对父元素设置一些定位属性会影响到子元素。（这还是因为浮动元素脱离文档流的关系）。<br> <strong>垂直对齐（Vertical alignment）</strong>：inline-block元素沿着默认的基线对齐。浮动元素紧贴顶部。你可以通过vertical属性设置这个默认基线，但对浮动元素这种方法就不行了。这也是我倾向于inline-block的主要原因。<br> <strong>空白（Whitespace）</strong>：inline-block包含html空白节点。如果你的html中一系列元素每个元素之间都换行了，当你对这些元素设置inline-block时，这些元素之间就会出现空白。而浮动元素会忽略空白节点，互相紧贴<br> <strong>IE6和IE7</strong>：Ie67对此属性部分支持。如果你要兼容这些浏览器，必须解决这个问题。这不是个大问题，但值得留意一下。<br> /<img src="/img/inline2.jpg" alt="inline"><br> 现在我们对块级元素设置了display：inline-block，图片左侧，元素之间出现空白。如果我们移除元素之间的空白（换行），就得到了图片右侧的效果。这是唯一的区别。(详细介绍可以参阅如何解决inline-block元素的空白间距)</p>
+<h4 id="解决空白问题"><a href="#解决空白问题" class="headerlink" title="解决空白问题"></a>解决空白问题</h4><p> 你现在估计已经跃跃欲试了，不过估计不想让那些空白出现。这里有一些方法来去掉空白:</p>
+<p>  <strong>删除html中的空白</strong>：不要让元素之间换行，这可能比较蛋疼，但也是一种方法，特别是你元素不多的时候。<br>  <strong>使用负边距</strong>：你可以用负边距来补齐空白。但你需要调整font-size，因为空白的宽度与这个属性有关系。我认为是0.25em，但我不确定。如果有人知道可以留言告诉我。<br>  <strong>给父元素设置font-size:0</strong>：不管空白多大，由于空白跟font-size的关系，设置这个属性即可把空白的宽度设置为0.在实际使用的时候，你还需要给子元素重新设置font-size。</p>
+<h4 id="什么时候使用inline-block，什么时候使用float"><a href="#什么时候使用inline-block，什么时候使用float" class="headerlink" title="什么时候使用inline-block，什么时候使用float"></a>什么时候使用inline-block，什么时候使用float</h4><p>什么时候使用，取决于你的设计稿跟解决方法。如果你需要文字环绕容器，那浮动是不二选择。如果你需要居中对齐元素，inline-block是个好选择。</p>
+<p>最终，这可以归结为float跟inline-block的两种属性作用后的区别，你需要对其作出选择。</p>
+<p> <strong>使用inline-block</strong>：当你需要控制元素的垂直对齐跟水平排列时，使用inline-block。<br> <strong>使用浮动</strong>：当你需要让元素环绕某一个元素时，或者需要支持旧版本ie，或者不想处理inline-block带来的空白问题时，使用浮动。<br> <img src="/img/inline3.jpg" alt="inline3"><br> 上图，把一系列元素设置了浮动，因为盒子二号宽度的关系，可以发现盒子五号被挤进去了（这些元素都脱离了文档流），这是图片排列中很常见的问题。</p>
+<h4 id="浮动、inline-block和图像排列"><a href="#浮动、inline-block和图像排列" class="headerlink" title="浮动、inline-block和图像排列"></a>浮动、inline-block和图像排列</h4><p>我使用inline-block主要是为了处理垂直对齐问题。我想这也是很多人使用这个属性的原因。我制作的很多站点都不可避免的带有一些图片列表。</p>
+<p>若父元素中的图片等高，设置浮动就会工作正常。但一旦有一列图片比较高时，图片的排列就会出现问题。这是因为浮动后，图片脱离了文档流。</p>
+<p>而inline-block由于未脱离文档流，不会出现这个问题。如果你想再创建一列图片时，不会受到上一列图片inline:block的影响。而你在使用时需要时刻注意清除浮动，当内容不断变化时这很容易产生bug。</p>
+<p>这里有个更明显的例子来体现inline-block跟float的区别：</p>
+<p>我制作了一个demo来展示一下两个写法效果的区别<br><img src="/img/inline4.jpg" alt="inline4"><br>上面的块级元素被设置了inline-block。由于他们没有脱离文档流，所以元素不会被某个过长的列挤上来。</p>
+<h4 id="inline-block导航"><a href="#inline-block导航" class="headerlink" title="inline-block导航"></a>inline-block导航</h4><p>另一种inline-block的适用场景：横向导航栏。通常，我们一般会设置a元素display：block然后进行浮动来制作。有时候我会直接通过对列表元素设置display:inline来制作。如果在制作中，你需要设置不同的display属性来处理浮动，那么inline-block不失为一种更好的解决方案。</p>
+<p>当你需要将元素排列成一行或者多行时，更倾向于考虑使用inline-block代替float。当然，直接使用table也是一种方法，他毕竟是专门用来处理横向与纵向排列的元素的。</p>
+<p>如果你需要创建一个很复杂的包含行列的布局，table是你的最佳选择，不过你同样也可以考虑inline-block</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/02/告诉你什么是javascript的回调函数/" rel="next" title="告诉你什么是javascript的回调函数">
+                <i class="fa fa-chevron-left"></i> 告诉你什么是javascript的回调函数
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/28/nginx反向代理配置/" rel="prev" title="nginx反向代理配置">
+                nginx反向代理配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/07/29/inline-block和float的区别，什么时候使用/"
+           data-title="inline-block和float的区别，什么时候使用" data-url="http://yoursite.com/2015/07/29/inline-block和float的区别，什么时候使用/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Me1kro Peng" />
+          <p class="site-author-name" itemprop="name">Me1kro Peng</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#inline-block是什么？"><span class="nav-number">1.</span> <span class="nav-text">inline-block是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#inline-block和float的区别"><span class="nav-number">2.</span> <span class="nav-text">inline-block和float的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决空白问题"><span class="nav-number">3.</span> <span class="nav-text">解决空白问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么时候使用inline-block，什么时候使用float"><span class="nav-number">4.</span> <span class="nav-text">什么时候使用inline-block，什么时候使用float</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮动、inline-block和图像排列"><span class="nav-number">5.</span> <span class="nav-text">浮动、inline-block和图像排列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#inline-block导航"><span class="nav-number">6.</span> <span class="nav-text">inline-block导航</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Me1kro Peng</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"meikro"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
